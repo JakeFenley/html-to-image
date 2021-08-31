@@ -17,6 +17,7 @@ const cache: {
 export function getBlobFromURL(
   url: string,
   options: Options,
+  useCors: boolean = false,
 ): Promise<{ blob: string; contentType: string } | null> {
   if (cache[url]) {
     return cache[url]
@@ -52,7 +53,7 @@ export function getBlobFromURL(
 
   const deferred = window.fetch
     ? window
-        .fetch(url, options.useCors ? CORS_HEADERS : undefined)
+        .fetch(url, useCors ? CORS_HEADERS : undefined)
         .then((res) =>
           res.blob().then((blob) => ({
             blob,

@@ -71,5 +71,8 @@ export type Options = {
    * embed CSS for use across multiple calls to library functions.
    */
   fontEmbedCss?: string
-  useCors?: boolean
+  /**
+   * Classname strings for setting CORS headers on all nodes containing classnames within the array.
+   */
+  corsImageContainers?: [string]
 }

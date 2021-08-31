@@ -1,7 +1,8 @@
+import { getMimeType, isDataUrl, toArray, toDataURL } from './util'
+
 import { Options } from './options'
-import { getBlobFromURL } from './getBlobFromURL'
 import { embedResources } from './embedResources'
-import { toArray, isDataUrl, toDataURL, getMimeType } from './util'
+import { getBlobFromURL } from './getBlobFromURL'
 
 export async function embedImages(
   clonedNode: HTMLElement,
@@ -47,8 +48,11 @@ function embedImageNode(
     return Promise.resolve(clonedNode)
   }
   const src = clonedNode.src
+  const useCors = options.corsImageContainers 
+  ? options.corsImageContainers.some(className => clonedNode.classList.contains(className))
+  : false
   return Promise.resolve(src)
-    .then((url) => getBlobFromURL(url, options))
+    .then((url) => getBlobFromURL(url, options, useCors))
     .then((data) =>
       toDataURL(data!.blob, getMimeType(src) || data!.contentType),
     )
