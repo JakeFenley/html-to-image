@@ -1,7 +1,8 @@
 /* tslint:disable:max-line-length */
 
+import { CORS_HEADERS, getDataURLContent } from './util'
+
 import { Options } from './options'
-import { getDataURLContent } from './util'
 
 // KNOWN ISSUE
 // -----------
@@ -13,22 +14,12 @@ const cache: {
   [url: string]: Promise<{ blob: string; contentType: string } | null>
 } = {}
 
-function isFont(filename: string) {
-  return /ttf|otf|eot|woff2?/i.test(filename)
-}
-
 export function getBlobFromURL(
   url: string,
   options: Options,
 ): Promise<{ blob: string; contentType: string } | null> {
-  let href = url.replace(/\?.*/, '')
-
-  if (isFont(href)) {
-    href = href.replace(/.*\//, '')
-  }
-
-  if (cache[href]) {
-    return cache[href]
+  if (cache[url]) {
+    return cache[url]
   }
 
   // cache bypass so we dont have CORS issues with cached images
@@ -61,7 +52,7 @@ export function getBlobFromURL(
 
   const deferred = window.fetch
     ? window
-        .fetch(url)
+        .fetch(url, options.useCors ? CORS_HEADERS : undefined)
         .then((res) =>
           res.blob().then((blob) => ({
             blob,
@@ -138,7 +129,7 @@ export function getBlobFromURL(
   } | null>
 
   // cache result
-  cache[href] = promise
+  cache[url] = promise
 
   return promise
 }

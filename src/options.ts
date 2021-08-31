@@ -71,4 +71,5 @@ export type Options = {
    * embed CSS for use across multiple calls to library functions.
    */
   fontEmbedCss?: string
+  useCors?: boolean
 }

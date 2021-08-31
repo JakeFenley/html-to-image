@@ -12,6 +12,15 @@ const mimes: { [key: string]: string } = {
   tiff: 'image/tiff',
   svg: 'image/svg+xml',
 }
+export const CORS_HEADERS: { [key: string]: string | object } = {
+  method: 'GET',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+}
 
 export const uuid = (function uuid() {
   // generate uuid for className of pseudo elements.
